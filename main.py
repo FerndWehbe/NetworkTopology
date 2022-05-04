@@ -1,21 +1,10 @@
 from flask import Flask, redirect, request, render_template, url_for, flash
-from flask_navigation import Navigation
 import json
 import os
 
 app = Flask(__name__)
-nav = Navigation(app)
 
 app.secret_key = b"asjdioj1892ja"
-
-nav.Bar(
-    "top",
-    [
-        nav.Item("Home", "index"),
-        nav.Item("Criar", "editar"),
-        nav.Item("Desenhar", "desenhar"),
-    ],
-)
 
 
 default_template = (
@@ -34,6 +23,7 @@ def list_files():
 @app.route("/index/")
 @app.route("/")
 def index():
+    print(list_files())
     return render_template("index.html", list_files=list_files())
 
 

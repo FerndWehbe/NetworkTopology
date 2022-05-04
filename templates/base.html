@@ -16,13 +16,8 @@
             {% block header %}{% endblock %}
         </header>
         <nav class="navbar">
-            <ul>
-                {% for item in nav.top %}
-                <li>
-                    <a class="{{ 'active' if item.is_active else '' }}" href="{{ item.url }}">{{ item.label }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+            {% block nav %}
+            {% endblock %}
         </nav>
         {% with messages = get_flashed_messages() %}
         {% if messages %}

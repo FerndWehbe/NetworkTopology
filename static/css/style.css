@@ -128,12 +128,12 @@ header.header {
     display: flex;
     float: right;
     margin-block: auto;
-    margin-left: 45px;
     justify-content: space-around;
 }
 
 #div-edits>* {
     margin: 12px;
+    margin-block: auto;
 }
 
 #inputs {
@@ -146,16 +146,41 @@ header.header {
 #inputs>div>label {
     color: white;
 }
+#inputs>div>input {
+    width: max(200px, 90%);
+}
+#inputs>div {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
 
 #name-network {
+    /* display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center; */
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    justify-content: center;
+    margin-block: auto;
 }
 
 #name-network>div>label {
     color: white;
+}
+
+#name-network>div>input {
+    width: max(200px, 90%);
+}
+#name-network>div {
+    width: 100%;
+    /* height: 30px; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 #id {
@@ -180,4 +205,26 @@ header.header {
 #helper {
     width: 15px;
     height: 15px;
+}
+
+@media (max-width: 1400px) {
+    #interface {
+        flex-direction: column;
+    }
+    #buttons {
+        justify-content: center;
+    }
+    #inputs {
+        width: 40%;
+    }
+    #inputs > div > input {
+        width: 90%;
+    }
+
+    #name-network {
+        width: 20%;
+    }
+    #name-network > div > input {
+        width: 90%;
+    }
 }

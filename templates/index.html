@@ -4,6 +4,15 @@
 <h1>{% block title %}Network Topology{% endblock %}</h1>
 {% endblock %}
 
+{% block nav %}
+    <ul>
+        <li><a class="active" href="/">Home</a></li>
+        <li><a href="/editar/">Criar</a></li>
+        <li><a href="/desenhar/">desenhar</a></li>
+    </ul>
+{% endblock %}
+
+
 {% block content %}
 <style>
     .item {
