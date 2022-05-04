@@ -176,3 +176,8 @@ header.header {
 .redes-criadas>h4 {
     margin: 15px;
 }
+
+#helper {
+    width: 15px;
+    height: 15px;
+}

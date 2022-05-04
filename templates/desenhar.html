@@ -14,9 +14,16 @@
     #edit>button {
         margin: 5px;
     }
+
+    #edit>h4 {
+        position: absolute;
+        left: 50%;
+        text-anchor: middle;
+    }
 </style>
 <script src="{{ url_for('static', filename='js/d3.v7.min.js') }}"></script>
 <div id="edit">
+    <h4>{{ file.strip(".json").replace("_", " ") }}</h4>
     <button class="edit-buttons" onclick="location.href='/editar/?file_name={{ file }}'">Editar</button>
 </div>
 <div id="chart">
@@ -32,7 +39,8 @@
             left: 90
         },
         width = 1920 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom
+        height = 500 - margin.top - margin.bottom,
+        list_vlans = []
 
     var svg = d3.select("svg")
         .attr("width", width + margin.left + margin.right)
@@ -67,6 +75,14 @@
             links = treeData.descendants().slice(1),
             i = 0,
             duration = 250
+
+        recusiveCount(source.data, list_vlans)
+
+        list_vlans = [...new Set(list_vlans)]
+
+        var colors = d3.scaleLinear()
+            .range(d3['schemeDark2'])
+            .domain(list_vlans)
 
 
         nodes.forEach(el => el.depth == 1 ? el.y = 180 : el.y = el.depth * 180)
@@ -183,7 +199,13 @@
                 }
                 return diagonal(o, o)
             })
-            .attr("style", "fill: none; stroke-width: 3px; stroke: #14aecc")
+            .attr("style", "fill: none; stroke-width: 3px;")
+            .attr("stroke", d => {
+                if (!d.data.vlans) return "#14aecc"
+                var node_vlans = d.data.vlans
+                if (node_vlans.length == 1) return colors(node_vlans[0])
+                return colors(node_vlans[1])
+            })
 
         var linkUpdate = linkEnter.merge(link);
 
@@ -244,6 +266,20 @@
                 ${d.y} ${d.x}`
         }
         return path
+    }
+
+    parseVlans = (value) => {
+        var parsed = value.split(",").map(value => parseInt(value.trim()))
+        return parsed
+    }
+
+    recusiveCount = (data, list_vlans) => {
+        if (data.vlans) {
+            data.vlans.forEach(vlan => list_vlans.push(vlan))
+        }
+        if (data.children) {
+            data.children.forEach(el => recusiveCount(el, list_vlans))
+        }
     }
 </script>
 

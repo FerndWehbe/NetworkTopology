@@ -21,34 +21,41 @@
             <div>
                 <label>SysName:</label>
                 <input id="name" type="text" value="">
+                <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}" title="Nome do ativo de rede.">
             </div>
             <div>
                 <label>SysLocation:</label>
                 <input id="location" type="text" value="">
+                <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}" title="Local da instalação do ativo de rede.">
             </div>
             <div>
                 <label>Ip Address:</label>
                 <input id="ipaddress" type="text" value="">
+                <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}" title="Endereço IP do ativo de rede.">
             </div>
         </div>
         <div id="inputs">
             <div>
                 <label>Uplink Port:</label>
                 <input id="uplink" type="text" value="">
+                <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}" title="Numero da porta de Uplink do ativo de rede.">
             </div>
             <div>
                 <label>Parent Port:</label>
                 <input id="parent-port" type="text" value="">
+                <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}" title="Numero da porta do ativo anterior que liga ao Uplink.">
             </div>
             <div>
                 <label>Vlans:</label>
                 <input id="vlans" type="text" value="">
+                <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}" title="Lista de Vlans no ativo de rede.&#010;Coloque uma lista de vlans (id) separado por virgula">
             </div>
         </div>
         <div id="name-network">
             <div>
                 <label>Nome do arquivo:</label>
                 <input id="file_name" type="text" value="">
+                <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}" title="Nome da rede a ser salva (utilize _ para representar espaços em branco).">
             </div>
         </div>
         <button class="edit-buttons" id="edit" disabled="disabled" onclick="editChildren()">Edit Node</button>

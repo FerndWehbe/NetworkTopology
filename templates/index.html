@@ -54,7 +54,7 @@
         <div id="lista">
             {% for arq in list_files %}
             <div class="list">
-                <a class="item" href="/desenhar/?file_name={{arq}}">{{arq.strip(".json")}}</a>
+                <a class="item" href="/desenhar/?file_name={{arq}}">{{arq.strip(".json").replace("_", " ")}}</a>
             </div>
             {% endfor %}
         </div>
