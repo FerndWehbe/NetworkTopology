@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{% block title %}Edit Topology{% endblock %}</h1>
+{% endblock %}
+
+
+{% block content %}
+
+<script src="{{ url_for('static', filename='js/d3.v7.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/code.js') }}"></script>
+<div id="interface">
+    <div id="buttons">
+        <button class="edit-buttons" id="add-child" disabled="disabled" onclick="addChildren()">Add Child</button>
+        <button class="edit-buttons" id="remove" disabled="disabled" onclick="removeChildren()">Remove</button>
+        <button class="edit-buttons" id="salve" onclick="saveData()">Save Data</button>
+        <button class="edit-buttons" id="export" onclick="exportJson()">Export Json</button>
+    </div>
+    <div id="div-edits">
+        <div id="inputs">
+            <div>
+                <label>SysName:</label>
+                <input id="name" type="text" value="">
+            </div>
+            <div>
+                <label>SysLocation:</label>
+                <input id="location" type="text" value="">
+            </div>
+            <div>
+                <label>Ip Address:</label>
+                <input id="ipaddress" type="text" value="">
+            </div>
+        </div>
+        <div id="inputs">
+            <div>
+                <label>Uplink Port:</label>
+                <input id="uplink" type="text" value="">
+            </div>
+            <div>
+                <label>Parent Port:</label>
+                <input id="parent-port" type="text" value="">
+            </div>
+            <div>
+                <label>Vlans:</label>
+                <input id="vlans" type="text" value="">
+            </div>
+        </div>
+        <div id="name-network">
+            <div>
+                <label>Nome do arquivo:</label>
+                <input id="file_name" type="text" value="">
+            </div>
+        </div>
+        <button class="edit-buttons" id="edit" disabled="disabled" onclick="editChildren()">Edit Node</button>
+    </div>
+</div>
+<div id="chart">
+    <svg>
+    </svg>
+</div>
+
+</body>
+<script>
+    var selected = null;
+
+    var template = {
+        "Name": "Pai",
+        "children": [{
+            "Name": "filho",
+            "children": []
+        }]
+    }
+
+    var margin = {
+            top: 20,
+            right: 90,
+            bottom: 30,
+            left: 90
+        },
+        width = 1920 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom,
+        list_vlans = []
+
+    var svg = d3.select("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`)
+
+    var root, tree
+
+    var file_name = "{{ file_name }}"
+
+
+    var load_file = file_name ? file_name : "name.json"
+
+
+    document.querySelector("#file_name").value = load_file.replace(".json", "")
+
+    d3.json(`/static/arquivos_json/${load_file}`).then(data => {
+
+        tree = d3.tree()
+            .size([height, width])
+
+        root = d3.hierarchy(data, d => d.children)
+
+        root.x0 = height / 2
+        root.y0 = 0
+
+        var div_tooltip = d3.select("div.toolTip")
+
+        update(root)
+
+    }).catch(err => {
+
+        var data = template
+
+        tree = d3.tree()
+            .size([height, width])
+
+        root = d3.hierarchy(data, d => d.children)
+
+        root.x0 = height / 2
+        root.y0 = 0
+
+        var div_tooltip = d3.select("div.toolTip")
+
+        update(root)
+
+    })
+</script>
+{% endblock %}

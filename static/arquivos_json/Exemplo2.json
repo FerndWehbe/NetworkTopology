@@ -1,0 +1,77 @@
+{
+    "Name": "Core",
+    "children": [
+        {
+            "Name": "Filial-1",
+            "children": [
+                {
+                    "name": "",
+                    "children": [],
+                    "Name": "Presidencia",
+                    "Location": "Filial-1",
+                    "ipaddress": "192.168.10.2",
+                    "uplink": "24",
+                    "parentPort": "",
+                    "vlans": ""
+                },
+                {
+                    "name": "",
+                    "children": [],
+                    "Name": "Comercial",
+                    "Location": "Filial-1",
+                    "ipaddress": "192.168.10.3",
+                    "uplink": "24",
+                    "parentPort": "",
+                    "vlans": ""
+                },
+                {
+                    "name": "",
+                    "children": [],
+                    "Name": "Juridico",
+                    "Location": "Filial-1",
+                    "ipaddress": "192.168.10.4",
+                    "uplink": "24",
+                    "parentPort": "",
+                    "vlans": ""
+                }
+            ],
+            "Location": "Capital",
+            "ipaddress": "192.168.10.1",
+            "uplink": "24",
+            "parentPort": "",
+            "vlans": [
+                1,
+                10
+            ]
+        },
+        {
+            "children": [],
+            "Name": "Filial-2",
+            "Location": "Capital",
+            "ipaddress": "192.168.20.1",
+            "uplink": "24",
+            "parentPort": "",
+            "vlans": [
+                1,
+                20
+            ]
+        },
+        {
+            "children": [],
+            "Name": "Filial-3",
+            "Location": "Capital",
+            "ipaddress": "192.168.30.1",
+            "uplink": "24",
+            "parentPort": "",
+            "vlans": [
+                1,
+                30
+            ]
+        }
+    ],
+    "Location": "Capital",
+    "ipaddress": "192.168.0.1",
+    "uplink": "",
+    "parentPort": "",
+    "vlans": ""
+}
