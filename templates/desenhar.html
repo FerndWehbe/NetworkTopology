@@ -5,11 +5,12 @@
 {% endblock %}
 
 {% block nav %}
-    <ul>
-        <li><a class="active" href="/">Home</a></li>
-        <li><a href="/editar/">Criar</a></li>
-        <li><a class="active" href="/desenhar/">desenhar</a></li>
-    </ul>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/editar/">Criar</a></li>
+    <li><a class="active" href="/desenhar/">Desenhar</a></li>
+    <li><a href="/remove/">Remover</a></li>
+</ul>
 {% endblock %}
 
 {% block content %}
@@ -17,22 +18,24 @@
     #edit {
         display: flex;
         flex-direction: row-reverse;
+        align-items: center;
+        justify-content: space-around;
     }
 
     #edit>button {
         margin: 5px;
     }
-
-    #edit>h4 {
-        position: absolute;
-        left: 50%;
-        text-anchor: middle;
-    }
 </style>
 <script src="{{ url_for('static', filename='js/d3.v7.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/svg-export.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pdfkit.standalone.js') }}"></script>
+<script src="{{ url_for('static', filename='js/blob-stream@0.1.3') }}"></script>
+<script src="{{ url_for('static', filename='js/source.js') }}"></script>
+
 <div id="edit">
-    <h4>{{ file.strip(".json").replace("_", " ") }}</h4>
     <button class="edit-buttons" onclick="location.href='/editar/?file_name={{ file }}'">Editar</button>
+    <h4>{{ file.strip(".json").replace("_", " ") }}</h4>
+    <button class="edit-buttons" onclick="export_pdf()">Salvar PDF</button>
 </div>
 <div id="chart">
     <svg>
@@ -62,7 +65,6 @@
         .size([height, width])
 
     d3.json("/static/arquivos_json/{{file}}").then(data => {
-        console.log(data)
 
         root = d3.hierarchy(data, d => d.children)
 
@@ -288,6 +290,40 @@
         if (data.children) {
             data.children.forEach(el => recusiveCount(el, list_vlans))
         }
+    }
+
+    export_pdf = () => {
+        var svg_node = document.querySelector("#svg_chart_area")
+        downloadPDF(svg_node, "{{file}}".replace(".json", ""))
+
+    }
+
+    downloadPDF = (svg, outFileName) => {
+        let width = parseFloat(svg.getAttribute("width")),
+            height = parseFloat(svg.getAttribute("height"))
+
+        var svg_html = svg.outerHTML
+        let doc = new PDFDocument({
+            compress: false,
+            size: [width || 841.89, height || 595.28],
+        });
+
+        SVGtoPDF(doc, svg_html, 0, 0, {
+            preserveAspectRatio: "xMinYMin meet",
+            height: height,
+            width: width,
+        });
+
+        let stream = doc.pipe(blobStream());
+        stream.on('finish', () => {
+            let blob = stream.toBlob('application/pdf');
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = outFileName + ".pdf";
+            link.click();
+        });
+
+        doc.end();
     }
 </script>
 

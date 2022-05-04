@@ -5,13 +5,12 @@
 {% endblock %}
 
 {% block nav %}
-    <ul>
-        <li><a class="active" href="/">Home</a></li>
-        <li><a href="/editar/">Criar</a></li>
-        <li><a href="/remove/">Remover</a></li>
-    </ul>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/editar/">Criar</a></li>
+    <li><a class="active" href="/remove/">Remover</a></li>
+</ul>
 {% endblock %}
-
 
 {% block content %}
 <style>
@@ -47,26 +46,42 @@
         border-radius: 30px;
         background-color: #04aa6d48;
         display: flex;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
     }
 </style>
 <div class="container">
-    <div class="texto-inicial">
-        <h3>Ferramenta para criação de mapas de rede.</h3>
-        <br>
-        <p>A ferramenta tem o intuito de auxiliar na criação e visualização da topologia de rede. Usa o framework d3.js para
-            criação e interação dos mapas.</p>
-    </div>
     <div class="redes-criadas">
-        <h4>Lista de mapas salvos</h4>
+        <h4>Lista de mapas Salvos</h4>
+        <button class="edit-buttons" onclick="removerChecked()">Remover</button>
         <div id="lista">
             {% for arq in list_files %}
             <div class="list">
-                <a class="item" href="/desenhar/?file_name={{arq}}">{{arq.strip(".json").replace("_", " ")}}</a>
+                <input type="checkbox" name="{{arq.rstrip('.json')}}" value="{{arq.rstrip('.json')}}" id="check">
+                <label for="{{arq.rstrip('.json')}}">{{arq.rstrip('.json')}}</label>
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
+
+<script>
+    removerChecked = () => {
+        var checklist = document.querySelectorAll('input[type="checkbox"]:checked')
+        var names = []
+
+        checklist.forEach(el => {
+            names.push(el.name)
+        })
+
+        if (names.length > 0) {
+            fetch("/delete/", {
+                method: 'POST',
+                body: JSON.stringify({
+                    file_name: names
+                })
+            }).then(res => location.reload())
+        }
+    }
+</script>
 {% endblock %}

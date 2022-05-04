@@ -4,8 +4,6 @@ import os
 
 app = Flask(__name__)
 
-app.secret_key = b"asjdioj1892ja"
-
 
 default_template = (
     {"Name": "Pai", "children": [{"Name": "filho", "children": []}]},
@@ -23,7 +21,6 @@ def list_files():
 @app.route("/index/")
 @app.route("/")
 def index():
-    print(list_files())
     return render_template("index.html", list_files=list_files())
 
 
@@ -60,6 +57,25 @@ def save():
     with open(f"./static/arquivos_json/{name}.json", "w") as f:
         json.dump(dados, f, indent=4)
     return "Sucesso"
+
+
+@app.route("/remove/")
+def remove():
+    return render_template("remover.html", list_files=list_files())
+
+
+@app.route("/delete/", methods=["POST"])
+def delete():
+    data = json.loads(request.get_data().decode())
+    list_name = data["file_name"]
+    files = list_files()
+    for name in list_name:
+        if name + ".json" in files:
+            os.remove(f"./static/arquivos_json/{name}.json")
+            status = "Removido com sucesso"
+        else:
+            status = "Falha na remoção do arquivos"
+    return status
 
 
 if __name__ == "__main__":
