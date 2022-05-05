@@ -124,8 +124,8 @@ header.header {
 }
 
 #div-edits {
-    /* display: none; */
-    display: flex;
+    display: none;
+    /* display: flex; */
     float: right;
     margin-block: auto;
     justify-content: space-around;

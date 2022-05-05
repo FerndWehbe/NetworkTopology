@@ -108,6 +108,7 @@
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
 
+    var defs = svg.append("defs")
     var root, tree
 
     var file_name = "{{ file_name }}"

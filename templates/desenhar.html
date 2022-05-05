@@ -151,7 +151,12 @@
             .attr("x", -24)
             .attr("dy", ".25em")
             .attr("text-anchor", "start")
-            .text(d => `${d.data.uplink ? d.data.uplink : " "}`)
+            .html(d => {
+                if (d.data.uplink && d.data.parentPort) return `${d.data.parentPort} &xharr; ${d.data.parentPort}`
+                if (d.data.uplink) return d.data.uplink
+                if (d.data.parentPort) return d.data.parentPort + "&xharr;"
+                return ""
+            })
 
         // Update Nodes
 
@@ -181,7 +186,12 @@
             .text(d => `${d.data.ipaddress ? d.data.ipaddress : ' '}`)
 
         nodeUpdate.select('text#uplink-text')
-            .text(d => `${d.data.uplink ? d.data.uplink : " "}`)
+            .html(d => {
+                if (d.data.uplink && d.data.parentPort) return `${d.data.parentPort} &xharr; ${d.data.uplink}`
+                if (d.data.uplink) return d.data.uplink
+                if (d.data.parentPort) return d.data.parentPort + "&xharr;"
+                return ""
+            })
 
         //Exclui os nós removidos
 

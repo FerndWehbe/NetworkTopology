@@ -11,7 +11,7 @@
                     "Location": "Filial-1",
                     "ipaddress": "192.168.10.2",
                     "uplink": "24",
-                    "parentPort": "",
+                    "parentPort": "2",
                     "vlans": ""
                 },
                 {

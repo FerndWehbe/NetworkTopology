@@ -16,7 +16,7 @@ update = (source) => {
 
     recusiveCount(source.data, list_vlans)
 
-    list_vlans = [... new Set(list_vlans)]
+    list_vlans = [...new Set(list_vlans)]
 
     var colors = d3.scaleLinear()
         .range(d3['schemeDark2'])
@@ -134,10 +134,10 @@ update = (source) => {
         })
         .attr("style", "fill: none; stroke-width: 3px;")
         .attr("stroke", d => {
-            if(!d.data.vlans) return "#14aecc"
-            var node_vlans = d.data.vlans
-            if(node_vlans.length == 1) return colors(node_vlans[0])
-            return colors(node_vlans[1])
+            if (!d.data.vlans) return "#14aecc"
+                var node_vlans = d.data.vlans
+                if (node_vlans.length == 1) return colors(node_vlans[0])
+                return colors(node_vlans[1])
         })
 
     var linkUpdate = linkEnter.merge(link);
@@ -148,6 +148,8 @@ update = (source) => {
         .attr('d', function (d) {
             return diagonal(d, d.parent)
         })
+
+    style_link(linkUpdate, colors)
 
     var linkExit = link.exit()
 
@@ -259,13 +261,18 @@ editChildren = () => {
     var parentPort = document.querySelector("#parent-port").value.trim() || ""
     var vlans = document.querySelector("#vlans").value.trim() || ""
 
+    parsed_vlans = parseVlans(vlans)
+
+    if(isNaN(parsed_vlans[0])) {
+        parsed_vlans = ""
+    }
 
     selected.data.Name = name
     selected.data.Location = location
     selected.data.ipaddress = ipaddress
     selected.data.uplink = uplink
     selected.data.parentPort = parentPort
-    selected.data.vlans = parseVlans(vlans)
+    selected.data.vlans = parsed_vlans
 
     update(selected)
 
@@ -311,6 +318,7 @@ saveData = () => {
     if (!document.querySelector("#edit").disabled) editChildren()
 
     let data = d3.selectAll("g.node").data()[0].data
+
     let datastr = JSON.stringify({
         name: save_name,
         dados: data
@@ -333,4 +341,153 @@ exportJson = () => {
     linkEl.setAttribute('href', dataUri)
     linkEl.setAttribute('download', exportFileDefaultName)
     linkEl.click()
+}
+
+style_link = (linkUpdate, colors) => {
+    defs.remove()
+    defs = svg.append('defs')
+    linkUpdate.style('stroke', (d, i) => {
+        if (!d.data.vlans) return "#14aecc"
+        if (d.data.vlans.length == 1) return colors(d.data.vlans[0])
+
+        colorsmake = makeColors(d.data.vlans, colors)
+        var offset = makeOffset(colorsmake)
+        const gradientID = `gradient${i}`
+
+        const linearGradient = defs.append("linearGradient")
+            .attr("id", gradientID)
+
+        linearGradient.selectAll("stop")
+            .data(offset)
+            .enter()
+            .append("stop")
+            .attr("offset", d => d.offset)
+            .attr("stop-color", d => d.color)
+
+        return `url(#${gradientID})`
+    })
+}
+
+makeColors = (vlans, colors) => {
+    var colors_result = []
+    vlans.forEach(c => {
+        colors_result.push(colors(c))
+    })
+    return colors_result
+}
+
+makeOffset = (list_colors) => {
+    result = []
+    x = list_colors.length * 3
+    y = 0
+    for (var j = 0; j < 3; j++) {
+        for (var i = 0; i < list_colors.length; i++) {
+            result.push({
+                offset: ((100 / x) * y).toFixed(2) + "%",
+                color: list_colors[i]
+            })
+            y++
+        }
+    }
+    return result
+}
+
+makeDataLegend = (vlans, colors) => {
+    var result = []
+    vlans.forEach(d => {
+        result.push({
+            color: colors(d),
+            name: d
+        })
+    })
+    return result
+}
+
+elementLegends = (legend_title, array_data, spacing, margin, position) => {
+    var height = d3.select("#chart>svg").node().getBoundingClientRect().height
+    d3.select("svg>g#legend").remove()
+
+    var container = d3.select("svg")
+        .append("g")
+        .attr("id", "legend")
+
+
+    var g_nodes = []
+
+    var title = container.append("g")
+
+
+    title.append("text")
+        .text(legend_title)
+        .attr("font-size", "30px")
+        .attr("font-weight", 300)
+        .attr("alignment-baseline", "middle")
+
+    g_nodes.push(title)
+
+    for (var string of array_data) {
+        var g = container.append("g")
+        if (string.svgicon) {
+            var icon = g.append("g")
+                .attr("width", "18px")
+                .attr("height", "18px")
+                .attr("id", "warning")
+                .append('path')
+                .attr("fill", string.color)
+                .attr("d", string.svgicon)
+        } else {
+            var rect = g.append("rect")
+                .attr("fill", string.color)
+                .attr("width", 18)
+                .attr("height", 18)
+        }
+
+        var text = g.append("text")
+            .text(string.name)
+            .attr("alignment-baseline", "middle")
+            .attr("text-anchor", "start")
+            .attr("font-size", "14px")
+            .attr("x", 45)
+            .style("transform", "translateY(10px)")
+
+        g_nodes.push(g)
+    }
+
+
+
+    var dimensions = {
+        width: container.node().getBoundingClientRect().width
+    }
+
+
+    for (var i = 1; i < g_nodes.length; i++) {
+        g_nodes[i].attr("transform",
+            `translate(${-(dimensions.width / 2)}, ${g_nodes.slice(0, i).reduce((part, el) => part + el.node().getBoundingClientRect().height, 0) + (i * spacing)})`
+        )
+    }
+
+    dimensions.height = container.node().getBoundingClientRect().height
+    dimensions.width = container.node().getBoundingClientRect().width
+
+    g_nodes[0].attr("transform", `translate(${- title.node().getBoundingClientRect().width /2}, 0)`)
+
+    container.append("rect")
+        .attr("x", -((dimensions.width / 2) + margin))
+        .attr("y", -(margin + 10))
+        .attr("width", dimensions.width + (2 * margin))
+        .attr("height", dimensions.height + margin)
+        .style("fill", "none")
+        .style("stroke-width", "2px")
+        .style("stroke", "black")
+
+
+    if (position == "bottom") {
+        container.attr("transform",
+            `translate(${(dimensions.width / 2) + margin + 10}, ${height - (dimensions.height)})`)
+    } else {
+        container.attr("transform", `translate(${(dimensions.width / 2) + margin + 10}, ${2 * margin})`)
+    }
+
+
+    return dimensions
 }
