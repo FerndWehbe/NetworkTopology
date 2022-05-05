@@ -5,7 +5,7 @@ Ferramenta desenvolvida para auxiliar na criação de mapas da topologia de rede
 
 A página inicial da ferramenta mostra todas as redes mapeadas.
 
-No Menu de navegação contém 3 opções:
+No Menu de navegação contém 4 opções:
 
     - Home -> Página inicial da aplicação. Lista todas as tipologias criadas. Ao clicar você é redirecionado à página que desenha a topologia da rede.
     - Criar -> Redireciona para a parte de criação da topologia de rede. Usa um template base contendo somente um nó pai e um nó filho.
