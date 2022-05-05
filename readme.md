@@ -29,3 +29,39 @@ No Menu de navegação contém 3 opções:
 
 
     - Remover -> Lista todos os arquivos e permite que possam ser apagados do diretório arquivos_json
+
+### Modo de instalação
+    
+1- Baixe o projeto.
+
+    git clone https://github.com/FerndWehbe/NetworkTopoly
+
+ou 
+
+    Faça o download pela interface grafica de descompacte o arquivo.
+        
+2- Entre no diretorio do projeto e crie um ambiente virtual.
+
+    python3 -m venv venv
+    
+    
+***Necessário sempre que o projeto for executado.***       
+
+3- Ative o virtualenv.
+
+Windows
+    
+    ./venv/Scripts/Activate
+    
+Linux
+    
+    source ./venv/bin/active
+        
+4- Rode o projeto.
+
+    python main.py
+    
+    
+Assim que o projeto estiver rodando basta acessa-lo no navegador pelo endereço:
+    
+    http://127.0.0.1:8000
