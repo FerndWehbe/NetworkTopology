@@ -293,7 +293,7 @@
     }
 
     export_pdf = () => {
-        var svg_node = document.querySelector("#svg_chart_area")
+        var svg_node = document.querySelector("#chart>svg")
         downloadPDF(svg_node, "{{file}}".replace(".json", ""))
 
     }
@@ -305,7 +305,7 @@
         var svg_html = svg.outerHTML
         let doc = new PDFDocument({
             compress: false,
-            size: [width || 841.89, height || 595.28],
+            size: [d3.max([width, 841.89]), d3.max([height, 595.28])],
         });
 
         SVGtoPDF(doc, svg_html, 0, 0, {
