@@ -65,11 +65,18 @@ update = (source) => {
 
     nodeEnter.append("text")
         .attr("id", "uplink-text")
-        .attr("style", "font: 11px sans-serif; fill: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;")
+        .attr("style",
+            "font: 11px sans-serif; fill: black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;"
+        )
         .attr("x", -24)
         .attr("dy", ".25em")
         .attr("text-anchor", "start")
-        .text(d => `${d.data.uplink ? d.data.uplink : " "}`)
+        .html(d => {
+            if (d.data.uplink && d.data.parentPort) return `${d.data.parentPort} &xharr; ${d.data.parentPort}`
+            if (d.data.uplink) return d.data.uplink
+            if (d.data.parentPort) return d.data.parentPort + "&xharr;"
+            return ""
+        })
 
     // Update Nodes
 
@@ -99,7 +106,12 @@ update = (source) => {
         .text(d => `${d.data.ipaddress ? d.data.ipaddress : ' '}`)
 
     nodeUpdate.select('text#uplink-text')
-        .text(d => `${d.data.uplink ? d.data.uplink : " "}`)
+        .html(d => {
+            if (d.data.uplink && d.data.parentPort) return `${d.data.parentPort} &xharr; ${d.data.uplink}`
+            if (d.data.uplink) return d.data.uplink
+            if (d.data.parentPort) return d.data.parentPort + "&xharr;"
+            return ""
+        })
 
 
 
@@ -135,9 +147,9 @@ update = (source) => {
         .attr("style", "fill: none; stroke-width: 3px;")
         .attr("stroke", d => {
             if (!d.data.vlans) return "#14aecc"
-                var node_vlans = d.data.vlans
-                if (node_vlans.length == 1) return colors(node_vlans[0])
-                return colors(node_vlans[1])
+            var node_vlans = d.data.vlans
+            if (node_vlans.length == 1) return colors(node_vlans[0])
+            return colors(node_vlans[1])
         })
 
     var linkUpdate = linkEnter.merge(link);
@@ -146,17 +158,17 @@ update = (source) => {
         .transition()
         .duration(duration)
         .attr('d', function (d) {
+            style_link(linkUpdate, colors)
             return diagonal(d, d.parent)
         })
 
-    style_link(linkUpdate, colors)
 
     var linkExit = link.exit()
 
         .transition()
         .duration(duration)
         .attr('d', function (d) {
-            // style_link(linkUpdate)
+            style_link(linkUpdate)
             var o = {
                 x: source.x,
                 y: source.y
@@ -263,7 +275,7 @@ editChildren = () => {
 
     parsed_vlans = parseVlans(vlans)
 
-    if(isNaN(parsed_vlans[0])) {
+    if (isNaN(parsed_vlans[0])) {
         parsed_vlans = ""
     }
 

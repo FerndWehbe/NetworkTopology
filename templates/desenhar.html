@@ -236,17 +236,17 @@
             .transition()
             .duration(duration)
             .attr('d', function (d) {
+                style_link(linkUpdate, colors)
                 return diagonal(d, d.parent)
             })
 
-        style_link(linkUpdate, colors)
 
 
         var linkExit = link.exit()
             .transition()
             .duration(duration)
             .attr('d', function (d) {
-                // style_link(linkUpdate)
+                style_link(linkUpdate)
                 var o = {
                     x: source.x,
                     y: source.y
@@ -317,8 +317,8 @@
     }
 
     downloadPDF = (svg, outFileName) => {
-        let width = parseFloat(svg.getAttribute("width")),
-            height = parseFloat(svg.getAttribute("height"))
+        let width = parseFloat(svg.getAttribute("width"))/2,
+            height = parseFloat(svg.getAttribute("height"))/2
 
         var svg_html = svg.outerHTML
         let doc = new PDFDocument({
