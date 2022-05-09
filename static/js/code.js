@@ -168,7 +168,7 @@ update = (source) => {
         .transition()
         .duration(duration)
         .attr('d', function (d) {
-            style_link(linkUpdate)
+            style_link(linkUpdate, colors)
             var o = {
                 x: source.x,
                 y: source.y
