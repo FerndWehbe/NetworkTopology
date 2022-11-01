@@ -69,12 +69,13 @@ def delete():
     data = json.loads(request.get_data().decode())
     list_name = data["file_name"]
     files = list_files()
+    status = "Nenhum arquivo encontrado."
     for name in list_name:
         if name + ".json" in files:
             os.remove(f"./static/arquivos_json/{name}.json")
-            status = "Removido com sucesso"
+            status = "Removido com sucesso."
         else:
-            status = "Falha na remoção do arquivos"
+            status = "Falha na remoção do arquivos."
     return status
 
 
