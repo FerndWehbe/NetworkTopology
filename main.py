@@ -1,8 +1,11 @@
 from flask import Flask, redirect, request, render_template, url_for, flash
+from models import db_session, init_db, Networks
+from sqlalchemy.exc import IntegrityError
 import json
 import os
 
 app = Flask(__name__)
+init_db()
 
 
 default_template = (
@@ -54,6 +57,13 @@ def save():
     name = data["name"]
     dados = data["dados"]
 
+    try:
+        net = Networks(name, dados)
+        db_session.add(net)
+        db_session.commit()
+    except IntegrityError:
+        print(f"Chave name deve ser unica")
+
     with open(f"./static/arquivos_json/{name}.json", "w") as f:
         json.dump(dados, f, indent=4)
     return "Sucesso"
@@ -71,12 +81,25 @@ def delete():
     files = list_files()
     status = "Nenhum arquivo encontrado."
     for name in list_name:
+        Networks.query.filter_by(name=name).delete()
         if name + ".json" in files:
             os.remove(f"./static/arquivos_json/{name}.json")
             status = "Removido com sucesso."
         else:
             status = "Falha na remoção do arquivos."
     return status
+
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
+
+
+@app.route("/select/", methods=["GET"])
+def select():
+    name = request.args.get("name")
+    data = Networks.query.filter(Networks.name == name).first()
+    return f"{data.name} <br> {data.map_data}"
 
 
 if __name__ == "__main__":

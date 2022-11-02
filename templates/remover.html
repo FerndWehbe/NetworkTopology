@@ -37,7 +37,7 @@
         justify-content: center;
         padding: 40px calc((100% - (255px * 3)) / 2);
     }
-    
+
     .list {
         height: 100px;
         flex: 0 0 215px;
@@ -57,8 +57,9 @@
         <div id="lista">
             {% for arq in list_files %}
             <div class="list">
-                <input type="checkbox" name="{{arq.rstrip('.json')}}" value="{{arq.rstrip('.json')}}" id="check">
-                <label for="{{arq.rstrip('.json')}}">{{arq.rstrip('.json')}}</label>
+                <input type="checkbox" name="{{arq.replace('.json', '')}}" value="{{arq.replace('.json', '' )}}"
+                    id="check">
+                <label for="{{arq.replace('.json', '' )}}">{{arq.replace('.json', '')}}</label>
             </div>
             {% endfor %}
         </div>

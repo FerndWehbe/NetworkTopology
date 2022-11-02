@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block nav %}
-    <ul>
-        <li><a class="active" href="/">Home</a></li>
-        <li><a href="/editar/">Criar</a></li>
-        <li><a href="/remove/">Remover</a></li>
-    </ul>
+<ul>
+    <li><a class="active" href="/">Home</a></li>
+    <li><a href="/editar/">Criar</a></li>
+    <li><a href="/remove/">Remover</a></li>
+</ul>
 {% endblock %}
 
 
@@ -38,7 +38,7 @@
         justify-content: center;
         padding: 40px calc((100% - (255px * 3)) / 2);
     }
-    
+
     .list {
         height: 100px;
         flex: 0 0 215px;
@@ -55,7 +55,8 @@
     <div class="texto-inicial">
         <h3>Ferramenta para criação de mapas de rede.</h3>
         <br>
-        <p>A ferramenta tem o intuito de auxiliar na criação e visualização da topologia de rede. Usa o framework d3.js para
+        <p>A ferramenta tem o intuito de auxiliar na criação e visualização da topologia de rede. Usa o framework d3.js
+            para
             criação e interação dos mapas.</p>
     </div>
     <div class="redes-criadas">
@@ -63,7 +64,7 @@
         <div id="lista">
             {% for arq in list_files %}
             <div class="list">
-                <a class="item" href="/desenhar/?file_name={{arq}}">{{arq.strip(".json").replace("_", " ")}}</a>
+                <a class="item" href="/desenhar/?file_name={{arq}}">{{arq.replace(".json", "").replace("_", " ")}}</a>
             </div>
             {% endfor %}
         </div>

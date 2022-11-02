@@ -1,6 +1,8 @@
 # Virtualenv
 venv/
 
-
 # Code folder
 .vscode/
+
+# cache
+__pycache__/
