@@ -75,7 +75,7 @@ Linux
         
 4- Rode o projeto.
 
-    python main.py
+    python run.py
     
     
 Assim que o projeto estiver rodando basta acessa-lo no navegador pelo endereço:
