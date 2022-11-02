@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint
 from sqlalchemy.exc import IntegrityError
-from .models import db_session, Networks
+from .models import Networks, db
 from .tools import list_files
 import json
 import os
@@ -45,9 +45,9 @@ def save():
     dados = data["dados"]
 
     try:
-        net = Networks(name, dados)
-        db_session.add(net)
-        db_session.commit()
+        net = Networks(name=name, map_data=dados)
+        db.session.add(net)
+        db.session.commit()
     except IntegrityError:
         return "Chave name deve ser unica"
 
@@ -68,7 +68,9 @@ def delete():
     files = list_files()
     status = "Nenhum arquivo encontrado."
     for name in list_name:
-        Networks.query.filter_by(name=name).delete()
+        net = Networks.query.filter_by(name=name)
+        db.session.delete(net)
+        db.session.commit()
         if name + ".json" in files:
             os.remove(f"app/static/arquivos_json/{name}.json")
             status = "Removido com sucesso."
