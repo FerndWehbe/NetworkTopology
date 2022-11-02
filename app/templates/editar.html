@@ -29,19 +29,19 @@
                 <label>SysName:</label>
                 <input id="name" type="text" value="">
                 <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}"
-                    title="Nome do ativo de rede.">
+                    title="Nome do ativo de rede." alt="">
             </div>
             <div>
                 <label>SysLocation:</label>
                 <input id="location" type="text" value="">
                 <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}"
-                    title="Local da instalação do ativo de rede.">
+                    title="Local da instalação do ativo de rede." alt="">
             </div>
             <div>
                 <label>Ip Address:</label>
                 <input id="ipaddress" type="text" value="">
                 <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}"
-                    title="Endereço IP do ativo de rede.">
+                    title="Endereço IP do ativo de rede." alt="">
             </div>
         </div>
         <div id="inputs">
@@ -49,19 +49,20 @@
                 <label>Uplink Port:</label>
                 <input id="uplink" type="text" value="">
                 <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}"
-                    title="Numero da porta de Uplink do ativo de rede.">
+                    title="Numero da porta de Uplink do ativo de rede." alt="">
             </div>
             <div>
                 <label>Parent Port:</label>
                 <input id="parent-port" type="text" value="">
                 <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}"
-                    title="Numero da porta do ativo anterior que liga ao Uplink.">
+                    title="Numero da porta do ativo anterior que liga ao Uplink." alt="">
             </div>
             <div>
                 <label>Vlans:</label>
                 <input id="vlans" type="text" value="">
                 <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}"
-                    title="Lista de Vlans no ativo de rede.&#010;Coloque uma lista de vlans (id) separado por virgula">
+                    title="Lista de Vlans no ativo de rede.&#010;Coloque uma lista de vlans (id) separado por virgula"
+                    alt="">
             </div>
         </div>
         <div id="name-network">
@@ -69,7 +70,7 @@
                 <label>Nome do arquivo:</label>
                 <input id="file_name" type="text" value="">
                 <img id="helper" src="{{ url_for('static', filename='svg/interrogacao.svg') }}"
-                    title="Nome da rede a ser salva (utilize _ para representar espaços em branco).">
+                    title="Nome da rede a ser salva (utilize _ para representar espaços em branco)." alt="">
             </div>
         </div>
         <button class="edit-buttons" id="edit" disabled="disabled" onclick="editChildren()">Edit Node</button>
@@ -93,11 +94,11 @@
     }
 
     var margin = {
-            top: 20,
-            right: 90,
-            bottom: 30,
-            left: 90
-        },
+        top: 20,
+        right: 90,
+        bottom: 30,
+        left: 90
+    },
         width = 1920 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom,
         list_vlans = []

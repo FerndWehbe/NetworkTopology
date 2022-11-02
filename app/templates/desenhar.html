@@ -34,7 +34,7 @@
 
 <div id="edit">
     <button class="edit-buttons" onclick="location.href='/editar/?file_name={{ file }}'">Editar</button>
-    <h4>{{ file.strip(".json").replace("_", " ") }}</h4>
+    <h4>{{ file.replace(".json", "").replace("_", " ") }}</h4>
     <button class="edit-buttons" onclick="export_pdf()">Salvar PDF</button>
 </div>
 <div id="chart">
@@ -44,11 +44,11 @@
 
 <script>
     var margin = {
-            top: 20,
-            right: 90,
-            bottom: 30,
-            left: 90
-        },
+        top: 20,
+        right: 90,
+        bottom: 30,
+        left: 90
+    },
         width = 1920 - margin.left - margin.right,
         height = 900 - margin.top - margin.bottom,
         list_vlans = []
@@ -317,8 +317,8 @@
     }
 
     downloadPDF = (svg, outFileName) => {
-        let width = parseFloat(svg.getAttribute("width"))/2,
-            height = parseFloat(svg.getAttribute("height"))/2
+        let width = parseFloat(svg.getAttribute("width")) / 2,
+            height = parseFloat(svg.getAttribute("height")) / 2
 
         var svg_html = svg.outerHTML
         let doc = new PDFDocument({
@@ -470,7 +470,7 @@
         dimensions.height = container.node().getBoundingClientRect().height
         dimensions.width = container.node().getBoundingClientRect().width
 
-        g_nodes[0].attr("transform", `translate(${- title.node().getBoundingClientRect().width /2}, 0)`)
+        g_nodes[0].attr("transform", `translate(${- title.node().getBoundingClientRect().width / 2}, 0)`)
 
         container.append("rect")
             .attr("x", -((dimensions.width / 2) + margin))

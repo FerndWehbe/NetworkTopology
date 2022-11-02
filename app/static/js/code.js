@@ -339,7 +339,10 @@ saveData = () => {
     fetch("/save/", {
         method: "POST",
         body: datastr
-    }).then(res => console.log(res)).catch(res => console.log(res))
+    }).then(res => alert("Aquivo salvo com sucesso!.")).catch(res => {
+        alert("Falha ao salvar o arquivo!.")
+        console.log(res)
+    })
 }
 
 exportJson = () => {
@@ -481,7 +484,7 @@ elementLegends = (legend_title, array_data, spacing, margin, position) => {
     dimensions.height = container.node().getBoundingClientRect().height
     dimensions.width = container.node().getBoundingClientRect().width
 
-    g_nodes[0].attr("transform", `translate(${- title.node().getBoundingClientRect().width /2}, 0)`)
+    g_nodes[0].attr("transform", `translate(${- title.node().getBoundingClientRect().width / 2}, 0)`)
 
     container.append("rect")
         .attr("x", -((dimensions.width / 2) + margin))
