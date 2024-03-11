@@ -1,9 +1,11 @@
-from flask import render_template, request, redirect, url_for, flash, Blueprint
-from sqlalchemy.exc import IntegrityError
-from .models import Networks, db
-from .tools import list_files
 import json
 import os
+
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from sqlalchemy.exc import IntegrityError
+
+from .models import Networks, db
+from .tools import list_files
 
 app_print = Blueprint("profile", __name__)
 
@@ -51,7 +53,7 @@ def save():
     except IntegrityError:
         return "Chave name deve ser unica"
 
-    with open(f"app/static/arquivos_json/{name}.json", "w") as f:
+    with open(f"app/static/arquivos_json/{name}.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, indent=4)
     return "Sucesso"
 
@@ -68,10 +70,10 @@ def delete():
     files = list_files()
     status = "Nenhum arquivo encontrado."
     for name in list_name:
-        net = Networks.query.filter_by(name=name)
+        net = Networks.query.filter_by(name=name).one()
         db.session.delete(net)
         db.session.commit()
-        if name + ".json" in files:
+        if f"{name}.json" in files:
             os.remove(f"app/static/arquivos_json/{name}.json")
             status = "Removido com sucesso."
         else:
